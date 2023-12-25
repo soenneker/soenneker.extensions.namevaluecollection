@@ -8,5 +8,5 @@
 ## Installation
 
 ```
-Install-Package Soenneker.Extensions.NameValueCollection
+dotnet add package Soenneker.Extensions.NameValueCollection
 ```
