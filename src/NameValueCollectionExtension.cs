@@ -15,7 +15,7 @@ public static class NameValueCollectionExtension
     /// </summary>
     public static Dictionary<string, string> ToDictionary(this System.Collections.Specialized.NameValueCollection nameValueCollection)
     {
-        if (nameValueCollection == null || nameValueCollection.Count == 0)
+        if (nameValueCollection is null || nameValueCollection.Count == 0)
             return new Dictionary<string, string>(0);
 
         var result = new Dictionary<string, string>(nameValueCollection.Count);
