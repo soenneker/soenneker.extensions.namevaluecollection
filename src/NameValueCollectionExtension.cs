@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Soenneker.Extensions.String;
 
 namespace Soenneker.Extensions.NameValueCollection;
 
@@ -14,25 +15,24 @@ public static class NameValueCollectionExtension
     /// </summary>
     public static Dictionary<string, string> ToDictionary(this System.Collections.Specialized.NameValueCollection nameValueCollection)
     {
-        var result = new Dictionary<string, string>();
+        if (nameValueCollection == null || nameValueCollection.Count == 0)
+            return new Dictionary<string, string>(0);
 
-        // check for count first because AllKeys is more expensive 
-        if (nameValueCollection.Count == 0)
-            return result;
+        var result = new Dictionary<string, string>(nameValueCollection.Count);
 
-        foreach (string? key in nameValueCollection.AllKeys)
+        for (int i = 0; i < nameValueCollection.Count; i++)
         {
-            if (key == null)
+            string? key = nameValueCollection.GetKey(i);
+            if (key.IsNullOrEmpty())
                 continue;
 
-            if (result.ContainsKey(key))
+            // Use indexer to get the value directly.
+            string? value = nameValueCollection.Get(i);
+
+            if (value.IsNullOrEmpty())
                 continue;
 
-            string? value = nameValueCollection[key];
-
-            if (value == null)
-                continue;
-
+            // Add key-value pair to the dictionary.
             result[key] = value;
         }
 
