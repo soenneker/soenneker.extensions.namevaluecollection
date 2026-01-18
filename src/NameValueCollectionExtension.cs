@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
-using Soenneker.Extensions.String;
+﻿using Soenneker.Extensions.String;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 
 namespace Soenneker.Extensions.NameValueCollection;
 
@@ -13,26 +16,33 @@ public static class NameValueCollectionExtension
     /// So instead of returning a comma separate list for a value, keys that already exist in the Dictionary will not be added.<para/>
     /// Will not add keys where the value is null either.
     /// </summary>
-    public static Dictionary<string, string> ToDictionary(this System.Collections.Specialized.NameValueCollection nameValueCollection)
+    [Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Dictionary<string, string> ToDictionary(
+        this System.Collections.Specialized.NameValueCollection nvc)
     {
-        if (nameValueCollection is null || nameValueCollection.Count == 0)
-            return new Dictionary<string, string>(0);
+        if (nvc is null)
+            return [];
 
-        var result = new Dictionary<string, string>(nameValueCollection.Count);
+        int count = nvc.Count;
 
-        for (int i = 0; i < nameValueCollection.Count; i++)
+        if (count == 0)
+            return [];
+
+        var result = new Dictionary<string, string>(count, StringComparer.Ordinal);
+
+        for (int i = 0; i < count; i++)
         {
-            string? key = nameValueCollection.GetKey(i);
+            string? key = nvc.GetKey(i);
+
             if (key.IsNullOrEmpty())
                 continue;
 
-            // Use indexer to get the value directly.
-            string? value = nameValueCollection.Get(i);
+            string? value = nvc.Get(i);
 
             if (value.IsNullOrEmpty())
                 continue;
 
-            // Add key-value pair to the dictionary.
+            // Direct assignment avoids Add + exception path
             result[key] = value;
         }
 
