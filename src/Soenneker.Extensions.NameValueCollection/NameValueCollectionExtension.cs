@@ -16,6 +16,7 @@ public static class NameValueCollectionExtension
     /// So instead of returning a comma separate list for a value, keys that already exist in the Dictionary will not be added.<para/>
     /// Will not add keys where the value is null either.
     /// </summary>
+    /// <returns>NameValueCollection can contain multiple equal keys, but dictionaries cannot. <para/> So instead of returning a comma separate list for a value, keys that already exist in the Dictionary will not be added.<para/> Will not add keys where the value is null either.</returns>
     [Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Dictionary<string, string> ToDictionary(
         this System.Collections.Specialized.NameValueCollection nvc)
