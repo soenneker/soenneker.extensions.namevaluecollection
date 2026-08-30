@@ -12,11 +12,12 @@ namespace Soenneker.Extensions.NameValueCollection;
 public static class NameValueCollectionExtension
 {
     /// <summary>
-    /// NameValueCollection can contain multiple equal keys, but dictionaries cannot. <para/>
-    /// So instead of returning a comma separate list for a value, keys that already exist in the Dictionary will not be added.<para/>
-    /// Will not add keys where the value is null either.
+    /// Copies nonempty keys and values into a new ordinal dictionary.
     /// </summary>
-    /// <returns>NameValueCollection can contain multiple equal keys, but dictionaries cannot. <para/> So instead of returning a comma separate list for a value, keys that already exist in the Dictionary will not be added.<para/> Will not add keys where the value is null either.</returns>
+    /// <remarks>When a key has multiple values, the <see cref="System.Collections.Specialized.NameValueCollection"/>
+    /// indexed getter combines them into the string stored in the dictionary.</remarks>
+    /// <param name="nvc">The collection to copy. A null collection produces an empty dictionary.</param>
+    /// <returns>A new dictionary containing the collection's nonempty keys and combined nonempty values.</returns>
     [Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Dictionary<string, string> ToDictionary(
         this System.Collections.Specialized.NameValueCollection nvc)
